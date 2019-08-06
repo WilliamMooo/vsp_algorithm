@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>C1-1</title>
+</head>
+<body>
+    <input id="inputval" type="text"  value="">
+    <input id="compute" type="button" value="compute">
+    <p id="res"></p>
+    <script>
+        const compute = document.getElementById("compute")
+        const resShow = document.getElementById("res")
+
+        function matrixMul(M1, M2) {
+            let a11 = M1[0][0]*M2[0][0] + M1[0][1]*M2[1][0]
+            let a12 = M1[0][0]*M2[0][1] + M1[0][1]*M2[1][1]
+            let a21 = M1[1][0]*M2[0][0] + M1[1][1]*M2[1][0]
+            let a22 = M1[1][0]*M2[0][1] + M1[1][1]*M2[1][1]
+            let M = [[a11, a12], [a21, a22]]
+            return M
+        }
+
+        function matrixPow(M, n) {
+            if (n==1) return M
+            else {
+                if (n%2 == 0) {
+                    return matrixMul(matrixPow(M, n/2), matrixPow(M, n/2))
+                } else {
+                    return matrixMul(M, matrixPow(M, n-1))
+                }
+            }
+        }
+
+        compute.addEventListener("click", ()=>{
+            let n = parseInt(document.getElementById("inputval").value)
+            let res = 0
+            let matrix = [[1, 1], [1, 0]]
+            let origin = matrix
+            if (n==0 || n==1) {
+                res = 1
+            } else { // n >= 2
+                n -= 1
+                matrix = matrixPow(matrix, n)
+                res = matrix[0][0] + matrix[0][1]
+            }
+            resShow.innerHTML = res
+        })
+    </script>
+</body>
+</html>
